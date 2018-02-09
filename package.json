@@ -1,0 +1,27 @@
+{
+  "name": "actioncable-nodejs",
+  "version": "0.0.1",
+  "description": "ActionCable NodeJS client Implementation Edit",
+  "main": "src/actioncable.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/violetatrium/actioncable-nodejs.git"
+  },
+  "keywords": [
+    "actioncable",
+    "nodejs",
+    "client"
+  ],
+  "author": "Zack Mattor <zmattor@gmail.com> (https://zackmattor.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/violetatrium/actioncable-nodejs/issues"
+  },
+  "homepage": "https://github.com/violetatrium/actioncable-nodejs#readme",
+  "dependencies": {
+    "ws": "^4.0.0"
+  }
+}
