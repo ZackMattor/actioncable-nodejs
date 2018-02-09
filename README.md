@@ -1,9 +1,10 @@
 # actioncable-nodejs
 ActionCable NodeJS client Implementation.
 
+
+## Getting Started
 `npm install actioncable-nodejs --save`
 
-Example Usage
 ```javascript
 const ActionCable = require('./actioncable/actioncable.js');
 
