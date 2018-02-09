@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/violetatrium/actioncable-nodejs.git"
+    "url": "git+https://github.com/zackmattor/actioncable-nodejs.git"
   },
   "keywords": [
     "actioncable",
@@ -18,9 +18,9 @@
   "author": "Zack Mattor <zmattor@gmail.com> (https://zackmattor.com)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/violetatrium/actioncable-nodejs/issues"
+    "url": "https://github.com/zackmattor/actioncable-nodejs/issues"
   },
-  "homepage": "https://github.com/violetatrium/actioncable-nodejs#readme",
+  "homepage": "https://github.com/zackmattor/actioncable-nodejs#readme",
   "dependencies": {
     "ws": "^4.0.0"
   }
