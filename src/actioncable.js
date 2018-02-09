@@ -35,6 +35,7 @@ class ActionCable {
     return new Promise((resolve, reject) => {
       let connection = new WebSocket(this.cable_url, { origin: this.origin, headers: this.headers });
 
+      connection.on('error', (err) => {this._disconnected(err)});
       connection.on('open', () => {resolve(connection)});
       connection.on('close', this._disconnected.bind(this));
       connection.on('message', this._handle_message.bind(this));
@@ -67,11 +68,12 @@ class ActionCable {
     }
   }
 
-  _disconnected() {
+  _disconnected(err) {
     console.log("DISCONECTED!!");
 
     for(let sub in this.subscriptions) {
-      this.subscriptions[sub].callbacks.disconnected();
+      this.subscriptions[sub].callbacks.disconnected(err);
+      delete this.subscriptions[sub];
     }
   }
 };
