@@ -33,10 +33,10 @@ class Subscription {
   }
 
   perform(action, data) {
-    data = data || {};
-    data.action = action;
-
-    this.send(data);
+    this.send({
+      action: action,
+      data: data
+    });
   }
 
   send(data) {
