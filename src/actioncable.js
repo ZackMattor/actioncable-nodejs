@@ -50,7 +50,7 @@ class ActionCable {
     let identifier = data.identifier ? JSON.parse(data.identifier) : {};
 
     let sub = this.subscriptions[identifier.channel]
-    
+
     switch(type) {
       case message_types.welcome:
         break;

@@ -41,7 +41,11 @@ class Subscription {
 
   send(data) {
     this.cable.connection_promise.then((con) => {
-      con.send(this._create_packet(data));
+      if(con.readyState == 1) {
+        con.send(this._create_packet(data));
+      } else {
+        console.log('connection is not open');
+      }
     });
   }
 
