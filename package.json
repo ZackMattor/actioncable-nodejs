@@ -22,6 +22,6 @@
   },
   "homepage": "https://github.com/zackmattor/actioncable-nodejs#readme",
   "dependencies": {
-    "ws": "^4.0.0"
+    "ws": "^4.1.0"
   }
 }
