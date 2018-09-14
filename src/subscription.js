@@ -1,15 +1,16 @@
 class Subscription {
-  constructor(name, cable, callbacks) {
-    this.name = name;
+  constructor(options, cable, callbacks) {
+    this.options = options;
+    this.name = options.channel;
     this.callbacks = callbacks;
     this.cable = cable;
 
     this.cable.connection_promise.then((con) => {
-      console.log(`ActionCable - connecting to ${name}`);
+      console.log(`ActionCable - connecting to ${JSON.stringify(options)}`);
 
       con.send(JSON.stringify({
         command: 'subscribe',
-        identifier: JSON.stringify({channel: name})
+        identifier: JSON.stringify(options)
       }));
     });
   }
@@ -51,7 +52,7 @@ class Subscription {
 
   _create_packet(data) {
     let packet = {
-      identifier: JSON.stringify({ channel: this.name }),
+      identifier: JSON.stringify(this.options),
       command: "message",
       data: JSON.stringify(data)
     };

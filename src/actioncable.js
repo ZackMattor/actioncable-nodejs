@@ -23,13 +23,21 @@ class ActionCable {
     this.connection_promise = this._connect();
   }
 
-  subscribe(name, callbacks) {
+  subscribe(name_or_options, callbacks) {
+    if (typeof name_or_options === "string") {
+      name_or_options = {
+        channel: name_or_options
+      };
+    }
+
+    let name = name_or_options.channel;
+
     if(this.subscriptions[name]) {
       throw "Already subscribed to this channel!";
       return;
     }
 
-    this.subscriptions[name] = new Subscription(name, this, callbacks);
+    this.subscriptions[name] = new Subscription(name_or_options, this, callbacks);
     return this.subscriptions[name];
   }
 
