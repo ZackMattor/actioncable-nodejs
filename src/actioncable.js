@@ -94,7 +94,7 @@ class ActionCable {
 
     if(is_heartbeat_flat) {
       console.log('ActionCable -> Heartbeat has gone flat');
-      this.connection.close();
+      this.connection.close(1012); // 1012 - restarting
     }
   }
 
