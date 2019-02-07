@@ -1,12 +1,13 @@
 class Subscription {
-  constructor(options, cable, callbacks) {
+  constructor(options, cable, callbacks, logger = console) {
     this.options = options;
     this.name = options.channel;
     this.callbacks = callbacks;
     this.cable = cable;
+    this.logger = logger;
 
     this.cable.connection_promise.then((con) => {
-      console.log(`ActionCable - connecting to ${JSON.stringify(options)}`);
+      this.logger.log(`ActionCable - connecting to ${JSON.stringify(options)}`);
 
       con.send(JSON.stringify({
         command: 'subscribe',
@@ -25,7 +26,7 @@ class Subscription {
           this.callbacks.rejected();
           break;
         default:
-          console.log(`Subscription(${this.name}) - Unhandled message type ${type} | ${data}`);
+          this.logger.log(`Subscription(${this.name}) - Unhandled message type ${type} | ${data}`);
           break;
       }
     } else {
@@ -45,7 +46,7 @@ class Subscription {
       if(con.readyState == 1) {
         con.send(this._create_packet(data));
       } else {
-        console.log('connection is not open');
+        this.logger.log('connection is not open');
       }
     });
   }
