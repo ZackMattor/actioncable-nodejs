@@ -54,12 +54,19 @@ class Subscription {
   _create_packet(data) {
     let packet = {
       identifier: JSON.stringify(this.options),
-      command: "message",
+      command: 'message',
       data: JSON.stringify(data)
     };
 
     return JSON.stringify(packet);
   }
+  
+  unsubscribe() {
+    this.cable.connection.send(JSON.stringify({
+      command: 'unsubscribe',
+      identifier: JSON.stringify(this.options)
+    }));
+  };
 };
 
 module.exports = Subscription;
