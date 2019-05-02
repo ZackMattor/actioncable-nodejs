@@ -1,15 +1,17 @@
 class Subscription {
-  constructor(name, cable, callbacks) {
-    this.name = name;
+  constructor(options, cable, callbacks, logger = console) {
+    this.options = options;
+    this.name = options.channel;
     this.callbacks = callbacks;
     this.cable = cable;
+    this.logger = logger;
 
     this.cable.connection_promise.then((con) => {
-      console.log(`ActionCable - connecting to ${name}`);
+      this.logger.log(`ActionCable - connecting to ${JSON.stringify(options)}`);
 
       con.send(JSON.stringify({
         command: 'subscribe',
-        identifier: JSON.stringify({channel: name})
+        identifier: JSON.stringify(options)
       }));
     });
   }
@@ -24,7 +26,7 @@ class Subscription {
           this.callbacks.rejected();
           break;
         default:
-          console.log(`Subscription(${this.name}) - Unhandled message type ${type} | ${data}`);
+          this.logger.log(`Subscription(${this.name}) - Unhandled message type ${type} | ${data}`);
           break;
       }
     } else {
@@ -44,20 +46,27 @@ class Subscription {
       if(con.readyState == 1) {
         con.send(this._create_packet(data));
       } else {
-        console.log('connection is not open');
+        this.logger.log('connection is not open');
       }
     });
   }
 
   _create_packet(data) {
     let packet = {
-      identifier: JSON.stringify({ channel: this.name }),
-      command: "message",
+      identifier: JSON.stringify(this.options),
+      command: 'message',
       data: JSON.stringify(data)
     };
 
     return JSON.stringify(packet);
   }
+  
+  unsubscribe() {
+    this.cable.connection.send(JSON.stringify({
+      command: 'unsubscribe',
+      identifier: JSON.stringify(this.options)
+    }));
+  };
 };
 
 module.exports = Subscription;
