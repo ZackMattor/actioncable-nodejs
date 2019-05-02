@@ -21,6 +21,7 @@ declare module "actioncable-nodejs" {
 
   interface Subscription {
     cable: ActionCable;
+    unsubscribe(): void;
   }
 
   class ActionCable {
