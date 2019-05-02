@@ -15,6 +15,7 @@ class ActionCable {
     this.headers = opts.headers || {};
     this.connection = null;
     this.subscriptions = {};
+    this.logger = opts.logger || console
 
     // heartbeat state
     this.last_heartbeat_timestamp = null;
@@ -23,13 +24,21 @@ class ActionCable {
     this.connection_promise = this._connect();
   }
 
-  subscribe(name, callbacks) {
+  subscribe(name_or_options, callbacks) {
+    if (typeof name_or_options === "string") {
+      name_or_options = {
+        channel: name_or_options
+      };
+    }
+
+    let name = name_or_options.channel;
+
     if(this.subscriptions[name]) {
       throw "Already subscribed to this channel!";
       return;
     }
 
-    this.subscriptions[name] = new Subscription(name, this, callbacks);
+    this.subscriptions[name] = new Subscription(name_or_options, this, callbacks, this.logger);
     return this.subscriptions[name];
   }
 
@@ -85,14 +94,14 @@ class ActionCable {
     let is_heartbeat_flat = (this.last_heartbeat_timestamp + 10*1000) < (+ new Date());
 
     if(is_heartbeat_flat) {
-      console.log('ActionCable -> Heartbeat has gone flat');
-      this.connection.close();
+      this.logger.log('ActionCable -> Heartbeat has gone flat');
+      this.connection.close(1012); // 1012 - restarting
     }
   }
 
   _disconnected(err) {
-    console.log("ActionCable -> socket disconnected");
-    if(this.heartbeat_interval) { clearInterval(this.heartbeat_interval); console.log('ActionCable -> Cleared the heartbeat interval'); }
+    this.logger.log("ActionCable -> socket disconnected");
+    if(this.heartbeat_interval) { clearInterval(this.heartbeat_interval); this.logger.log('ActionCable -> Cleared the heartbeat interval'); }
 
     for(let sub in this.subscriptions) {
       this.subscriptions[sub].callbacks.disconnected(err);
